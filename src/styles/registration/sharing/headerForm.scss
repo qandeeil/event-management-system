@@ -1,0 +1,13 @@
+.headerForm {
+  margin-bottom: .7rem;
+  & h1 {
+    font-size: 30px;
+  }
+  & p {
+    color: #8692a6;
+    font-size: 14px;
+    margin: 0.5rem 0;
+    width: 76%;
+    line-height: 1.4rem;
+  }
+}

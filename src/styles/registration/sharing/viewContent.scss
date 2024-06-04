@@ -1,9 +1,8 @@
-.login-screen {
-  height: 100vh;
-  display: flex;
+.viewContent {
+  width: 40%;
   & .containerImage {
     height: 100%;
-    width: 40%;
+    width: 100%;
     position: relative;
     & .header-logo {
       position: absolute;
@@ -43,8 +42,5 @@
         font-weight: 600;
       }
     }
-  }
-  & form {
-    flex: 1;
   }
 }

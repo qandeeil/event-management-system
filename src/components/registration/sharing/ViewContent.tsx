@@ -1,14 +1,14 @@
 import React from "react";
-import "@/styles/login/login.scss";
-import imageOne from "../../public/login/pexels-photo-1540406.jpeg";
-import headerLogo from "../../public/login/headerLogo.svg";
+import "@/styles/registration/sharing/viewContent.scss";
 import Image from "next/image";
+import imageOne from "../../../../public/login/pexels-photo-1540406.jpeg";
+import headerLogo from "../../../../public/login/headerLogo.svg";
 
 type Props = {};
 
-const Login = (props: Props) => {
+const ViewContent = (props: Props) => {
   return (
-    <div className="login-screen">
+    <div className="viewContent">
       <div className="containerImage">
         <div className="header-logo">
           <Image src={headerLogo} alt="logo" width={200} height={100} />
@@ -26,9 +26,8 @@ const Login = (props: Props) => {
           </p>
         </div>
       </div>
-      <form></form>
     </div>
   );
 };
 
-export default Login;
+export default ViewContent;

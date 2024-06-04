@@ -1,0 +1,18 @@
+.registration-screen {
+  height: 100vh;
+  display: flex;
+  & .go-navigation {
+    display: flex;
+    justify-content: end;
+    width: 60%;
+    padding: 24px 42px;
+    color: #8692a6;
+    font-size: 16px;
+    & a {
+      margin-left: 0.5rem;
+      color: #1565d8;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  }
+}
