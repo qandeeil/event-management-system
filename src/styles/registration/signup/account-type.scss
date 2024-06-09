@@ -1,0 +1,31 @@
+.individual-screen {
+  height: 100vh;
+  display: flex;
+  overflow-y: hidden;
+  & .container-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    & .go-navigation {
+      display: flex;
+      justify-content: end;
+      padding: 24px 42px;
+      color: #8692a6;
+      font-size: 16px;
+      & a {
+        margin-left: 0.5rem;
+        color: #1565d8;
+        cursor: pointer;
+        font-weight: 600;
+      }
+    }
+    & form {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      flex-direction: column;
+      align-self: center;
+      width: 400px;
+    }
+  }
+}

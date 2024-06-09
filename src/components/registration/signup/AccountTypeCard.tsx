@@ -27,8 +27,14 @@ const AccountTypeCard = ({ type, title, description, onClick }: Props) => {
       }
     >
       <div className="icon">
-        <Image src={type === "1" ? polygonSVG : polygon2SVG} alt="polygonSVG" />
-        <Image src={type === "1" ? userSVG : briefcaseSVG} alt="userSVG" />
+        <Image
+          src={type === "individual" ? polygonSVG : polygon2SVG}
+          alt="polygonSVG"
+        />
+        <Image
+          src={type === "individual" ? userSVG : briefcaseSVG}
+          alt="userSVG"
+        />
       </div>
       <div className="info">
         <h1>{title}</h1>
