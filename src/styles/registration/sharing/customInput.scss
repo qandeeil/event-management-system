@@ -1,12 +1,11 @@
 .customInput {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
   & label {
     color: #696f79db;
     font-size: 13px;
     font-weight: 500;
-    margin-bottom: 0.4rem;
+    margin-bottom: .5rem;
   }
   & input {
     background-color: transparent;

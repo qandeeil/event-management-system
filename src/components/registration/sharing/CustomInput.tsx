@@ -8,6 +8,8 @@ type Props = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   name: string;
+  isError: boolean;
+  message: string;
 };
 
 const CustomInput = ({
@@ -17,17 +19,21 @@ const CustomInput = ({
   onChange,
   value,
   name,
+  isError,
+  message,
 }: Props) => {
   return (
     <div className="customInput">
-      <label>{lable}</label>
+      <label style={isError ? {color: 'red'} : {}}>{lable}</label>
       <input
         type={type}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
         name={name}
+        style={isError ? { borderColor: "red" } : {}}
       />
+      <label style={{ color: "red", marginTop: 6 }}>{isError && message}</label>
     </div>
   );
 };
