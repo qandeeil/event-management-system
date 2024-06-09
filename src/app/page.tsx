@@ -11,6 +11,8 @@ import { useAppDispatch } from "@/store/hooks";
 import { loginThunk } from "@/store/registration/user";
 import { ILogin } from "@/components/registration/signup/Interfaces";
 import axios from "axios";
+import { signIn } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 interface InfoUser {
   identity: string;
@@ -55,7 +57,16 @@ export default function Home() {
       if (loginResponse.error) {
         setIsError(loginResponse.payload);
       } else {
-        console.log(">> loginHandler ", loginResponse);
+        await signIn("credentials", {
+          token: loginResponse.payload,
+          redirect: true,
+          callbackUrl: "/home",
+        })
+          .then((response) => {
+            console.log(">> response ", response);
+          })
+          .catch((error) => console.error(error.message));
+        console.log(">> loginResponse ", loginResponse.payload);
       }
     } catch (error: any) {
       setIsError(error.message);
