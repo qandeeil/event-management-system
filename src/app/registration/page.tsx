@@ -8,6 +8,9 @@ import AccountTypeCard from "@/components/registration/signup/AccountTypeCard";
 import { useRouter } from "next/navigation";
 import DialogPasswordBusiness from "@/components/registration/signup/DialogPasswordBusiness";
 import { InfoAccountTypeCard } from "@/components/registration/signup/Interfaces";
+import { useAppDispatch } from "@/store/hooks";
+import { accountTypeThunk } from "@/store/registration/user";
+import Loading from "@/components/sharing/Loading";
 
 type Props = {};
 
@@ -17,22 +20,45 @@ const page = (props: Props) => {
   const [dialogPasswordBusiness, setDialogPasswordBusiness] =
     useState<Boolean>(false);
   const [codeBusiness, setCodeBusiness] = useState<string>("");
-  const goNavigation = (info: InfoAccountTypeCard) => {
-    if (info.type === "1") {
-      router.push("/registration/individual");
-    } else {
-      setDialogPasswordBusiness(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const goNavigation = async (info: InfoAccountTypeCard) => {
+    setIsLoading(true);
+    try {
+      if (info.type === "individual") {
+        await dispatch(accountTypeThunk(info.type)).then((response) => {
+          router.push(
+            `/registration/accountType?type=individual&token=${response.payload}`
+          );
+        });
+      } else {
+        setDialogPasswordBusiness(true);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) console.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
-  const checkAccessHandler = (e: any) => {
-    e.preventDefault();
-    if (codeBusiness === code) {
-      router.push("/registration/business");
-    } else {
+  const checkAccessHandler = async () => {
+    setIsLoading(true);
+    try {
+      if (codeBusiness === code) {
+        await dispatch(accountTypeThunk("business")).then((response) => {
+          router.push(
+            `/registration/accountType?type=business&token=${response.payload}`
+          );
+        });
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) console.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <div className="registration-screen">
+      <Loading isLoading={isLoading} />
       <ViewContent />
       <div className="container-content">
         <span className="go-navigation">
@@ -46,13 +72,13 @@ const page = (props: Props) => {
             }
           />
           <AccountTypeCard
-            type="1"
+            type="individual"
             title="Individual"
             description="Personal account to manage all you activities."
             onClick={goNavigation}
           />
           <AccountTypeCard
-            type="2"
+            type="business"
             title="Business"
             description="Own or belong to a company, this is for you."
             onClick={goNavigation}
