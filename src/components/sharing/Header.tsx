@@ -54,10 +54,10 @@ const Header = (props: Props) => {
             {user?.profile_image ? (
               <Image src={starSVG} alt="star" />
             ) : (
-              getInitials(user?.name).slice(0, 15)
+              getInitials(user?.name)
             )}
           </span>
-          <span className="profile_name">{user?.name}</span>
+          <span className="profile_name">{user?.name?.slice(0, 15)}</span>
           <div className={`box-menu ${showMenu ? "open" : ""}`}>
             <ul>
               <li>My Favorites</li>
