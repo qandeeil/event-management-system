@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/store/provider";
 import { Toaster } from "react-hot-toast";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,11 +39,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const getSession = async () => {
-    const sesstion = await getServerSession();
-    console.log(">> sesstion: ", sesstion?.user);
-  };
-  getSession();
   return (
     <html lang="en">
       <Providers>
