@@ -8,14 +8,13 @@ import CustomInput from "@/components/registration/sharing/CustomInput";
 import CustomButton from "@/components/registration/sharing/CustomButton";
 import { ISignup } from "@/components/registration/signup/Interfaces";
 import CustomInputPhoneNumber from "@/components/registration/sharing/CustomInputPhoneNumber";
-import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { checkValidationTokenThunk } from "@/store/registration/token";
 import {
   createAccountThunk,
   setIsErrorSignup,
 } from "@/store/registration/user";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Props = {
   title: string;
@@ -24,10 +23,8 @@ type Props = {
 };
 
 const AccountType = ({ title, description, token }: Props) => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userSlice);
-  const tokenSlice = useAppSelector((state) => state.tokenSlice);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<ISignup>({
     token: token,
@@ -46,9 +43,15 @@ const AccountType = ({ title, description, token }: Props) => {
   const createAccountHandler = async () => {
     setIsLoading(true);
     dispatch(setIsErrorSignup(null));
-    await dispatch(createAccountThunk(userData)).then((response: any) => {
+    await dispatch(createAccountThunk(userData)).then(async (response: any) => {
       if (!response.error) {
-        console.log(">> createAccountHandler: ", response.payload);
+        await signIn("credentials", {
+          token: response.payload,
+          redirect: true,
+          callbackUrl: "/",
+        })
+          .then((response) => {})
+          .catch((error) => console.error(error.message));
       } else {
         if (response.payload.authorization)
           toast.error(response.payload.authorization);
