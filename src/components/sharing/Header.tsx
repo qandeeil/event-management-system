@@ -54,7 +54,7 @@ const Header = (props: Props) => {
             {user?.profile_image ? (
               <Image src={starSVG} alt="star" />
             ) : (
-              getInitials(user?.name)
+              getInitials(user?.name).slice(0, 15)
             )}
           </span>
           <span className="profile_name">{user?.name}</span>
