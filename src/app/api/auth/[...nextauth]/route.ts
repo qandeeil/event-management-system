@@ -20,7 +20,7 @@ const handler = NextAuth({
                 },
               }
             );
-            const userInfoData = await userInfoResponse.data.user;
+            const userInfoData = await userInfoResponse.data;
             return userInfoData;
           } catch (error) {
             console.error("Error during authentication:", error);
