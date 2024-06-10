@@ -63,11 +63,8 @@ export default function Page() {
           redirect: true,
           callbackUrl: "/",
         })
-          .then((response) => {
-            console.log(">> response ", response);
-          })
+          .then((response) => {})
           .catch((error) => console.error(error.message));
-        console.log(">> loginResponse ", loginResponse.payload);
       }
     } catch (error: any) {
       setIsError(error.message);
