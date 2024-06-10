@@ -5,7 +5,7 @@ import CustomButton from "../sharing/CustomButton";
 type Props = {
   onChange: (value: string) => void;
   value: string;
-  onClick: (e: any) => void;
+  onClick: () => void;
   setDialogPasswordBusiness: (value: boolean) => void;
 };
 
