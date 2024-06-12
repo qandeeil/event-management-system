@@ -17,3 +17,11 @@ export interface ILogin {
   password: string;
   country: string;
 }
+
+export interface IEditAccount {
+  token: string;
+  name: string;
+  email: string;
+  phone_number: string | undefined;
+  profile_image: File | undefined;
+}
