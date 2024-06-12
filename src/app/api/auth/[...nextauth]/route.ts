@@ -48,9 +48,10 @@ const handler = NextAuth({
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (token.user) {
         session.user = token.user;
+        session.expires = new Date(token.user.exp * 1000).toISOString();
       }
       return session;
     },
