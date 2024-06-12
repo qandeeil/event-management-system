@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../baseURL";
-import { ILogin, ISignup } from "@/components/registration/signup/Interfaces";
+import {
+  IEditAccount,
+  ILogin,
+  ISignup,
+} from "@/components/registration/signup/Interfaces";
 
 const initialState: any = {
   isError: null,
@@ -49,6 +53,30 @@ export const loginThunk = createAsyncThunk(
   async (data: ILogin, thunkAPI) => {
     try {
       const response = await axios.post(`${baseURL}/user/login`, data, {});
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+      return thunkAPI.rejectWithValue({ message: "Unexpected error occurred" });
+    }
+  }
+);
+
+export const updateAccountThunk = createAsyncThunk(
+  "user/updateAccountThunk",
+  async (data: IEditAccount, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/user/update-account`,
+        data,
+        {
+          headers: {
+            authorization: `Bearer ${data.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       return response.data;
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
