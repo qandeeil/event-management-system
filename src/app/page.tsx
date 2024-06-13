@@ -1,10 +1,13 @@
 "use client";
 import "@/styles/registration/login/login.scss";
+import "@/styles/screens/homeScreen.scss";
 import HomeScreen from "@/screens/HomeScreen";
 import { getSession, signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function Home() {
+function HomeComponent() {
+  const searchParams = useSearchParams();
   const [shouldSignOut, setShouldSignOut] = useState(false);
 
   useEffect(() => {
@@ -27,5 +30,14 @@ export default function Home() {
       signOut();
     }
   }, [shouldSignOut]);
+
   return <HomeScreen />;
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeComponent />
+    </Suspense>
+  );
 }

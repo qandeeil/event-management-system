@@ -19,7 +19,7 @@ interface InfoUser {
   password: string;
 }
 
-export default function Page() {
+export default function page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [infoUser, setInfoUser] = useState<ILogin>({
