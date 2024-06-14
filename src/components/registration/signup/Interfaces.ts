@@ -18,10 +18,14 @@ export interface ILogin {
   country: string;
 }
 
+export interface IRequestEditAccount {
+  token: string | undefined;
+  data: IEditAccount;
+}
+
 export interface IEditAccount {
-  token: string;
   name: string;
   email: string;
   phone_number: string | undefined;
-  profile_image: File | undefined;
+  profile_image: any;
 }
