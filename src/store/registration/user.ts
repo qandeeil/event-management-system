@@ -4,6 +4,7 @@ import baseURL from "../baseURL";
 import {
   IEditAccount,
   ILogin,
+  IRequestEditAccount,
   ISignup,
 } from "@/components/registration/signup/Interfaces";
 
@@ -65,15 +66,14 @@ export const loginThunk = createAsyncThunk(
 
 export const updateAccountThunk = createAsyncThunk(
   "user/updateAccountThunk",
-  async (data: IEditAccount, thunkAPI) => {
+  async (data: IRequestEditAccount, thunkAPI) => {
     try {
       const response = await axios.post(
         `${baseURL}/user/update-account`,
-        data,
+        data.data,
         {
           headers: {
             authorization: `Bearer ${data.token}`,
-            "Content-Type": "application/json",
           },
         }
       );
