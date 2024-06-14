@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTitle,
   styled,
-  TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "@/styles/sharing/settingsDialog.scss";
@@ -17,12 +16,15 @@ import { IEditAccount } from "../registration/signup/Interfaces";
 import CustomInputPhoneNumber from "../registration/sharing/CustomInputPhoneNumber";
 import { useAppDispatch } from "@/store/hooks";
 import { updateAccountThunk } from "@/store/registration/user";
+import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   openSettingsDialog: boolean;
   setOpenSettingsDialog: (v: boolean) => void;
   user: any;
   getInitials: any;
+  token: string | undefined;
 };
 
 const VisuallyHiddenInput = styled("input")({
@@ -42,12 +44,15 @@ const SettingsDialog = ({
   setOpenSettingsDialog,
   user,
   getInitials,
+  token,
 }: Props) => {
   const dispatch = useAppDispatch();
+  const { data: sesstion, update } = useSession();
+  const router = useRouter();
   const handleClose = () => {
     setOpenSettingsDialog(false);
   };
-  const [selectImage, setSelectImage] = useState();
+  const [selectImage, setSelectImage] = useState<any>();
   const [imageUrl, setImageUrl] = useState<any>(null);
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -57,7 +62,6 @@ const SettingsDialog = ({
     }
   };
   const [userData, setUserData] = useState<IEditAccount>({
-    token: "token",
     name: user?.name,
     email: user?.email,
     phone_number: user?.phone_number,
@@ -73,7 +77,6 @@ const SettingsDialog = ({
 
   useEffect(() => {
     setUserData({
-      token: "",
       name: user?.name,
       email: user?.email,
       phone_number: user?.phone_number,
@@ -89,8 +92,28 @@ const SettingsDialog = ({
   }, [selectImage]);
 
   const updateDataHandler = async () => {
-    const response = await dispatch(updateAccountThunk(userData));
-    console.log(">> response: ", response);
+    const formData: any = new FormData();
+    formData.append("token", token);
+    formData.append("name", userData.name);
+    formData.append("email", userData.email);
+    formData.append("phone_number", userData.phone_number);
+    if (selectImage) {
+      formData.append("profile_image", selectImage);
+    }
+
+    const response = await dispatch(
+      updateAccountThunk({ token: token, data: formData })
+    );
+
+    console.log(">> response.payload: ", response.payload);
+
+    if (response.payload?.updated) {
+      await update({
+        ...getSession(),
+        user: response.payload.user,
+      });
+      window.location.reload();
+    }
   };
 
   return (
