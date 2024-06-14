@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import baseURL from "../../../../store/baseURL";
 import axios from "axios";
+import { cookies } from "next/headers";
 
 const handler = NextAuth({
   providers: [
@@ -20,6 +21,11 @@ const handler = NextAuth({
                 },
               }
             );
+            cookies().set("accessToken", req.body?.token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+            });
             const userInfoData = await userInfoResponse.data;
             return userInfoData;
           } catch (error) {
@@ -42,9 +48,12 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.user = user;
+      }
+      if (trigger === "update" && session?.user) {
+        token.user = session.user;
       }
       return token;
     },
