@@ -43,7 +43,12 @@ const InputFilterEvents = ({ list, title, country, route, value }: Props) => {
         id={`include-input-in-list-${title}`}
         includeInputInList
         renderInput={(params) => (
-          <TextField {...params} label="" variant="standard" />
+          <TextField
+            {...params}
+            label=""
+            variant="standard"
+            placeholder={title}
+          />
         )}
         onChange={(e, v) => route(v)}
         value={value}
