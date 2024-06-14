@@ -5,12 +5,14 @@ import InputFilterEvents from "./InputFilterEvents";
 import listOfCountries from "../../../public/JSON/ListOfCountries.json";
 import { useRouter, useSearchParams } from "next/navigation";
 import ShowDateRange from "./ShowDateRange";
+import { Button } from "@mui/material";
 
 type Props = {};
 
 const FilterEvents = (props: Props) => {
   const params = useSearchParams();
   const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState<boolean>(false);
   const [filterData, setFilterData] = useState({
     country: params.get("country"),
     city: params.get("city"),
@@ -36,11 +38,15 @@ const FilterEvents = (props: Props) => {
             ...prevState,
             country: v,
           }));
-          router.push(
-            `?country=${v || params.get("country")}&startDate=${
-              filterData.selectionRangeDate.startDate
-            }&endDate=${filterData.selectionRangeDate.endDate}`
-          );
+          if (selectedDate) {
+            router.push(
+              `?country=${v || params.get("country")}&startDate=${
+                filterData.selectionRangeDate.startDate
+              }&endDate=${filterData.selectionRangeDate.endDate}`
+            );
+          } else {
+            router.push(`?country=${v || params.get("country")}`);
+          }
         }}
         value={filterData.country}
       />
@@ -53,11 +59,15 @@ const FilterEvents = (props: Props) => {
             ...prevState,
             city: v,
           }));
-          router.push(
-            `?country=${params.get("country")}&city=${v}&startDate=${
-              filterData.selectionRangeDate.startDate
-            }&endDate=${filterData.selectionRangeDate.endDate}`
-          );
+          if (selectedDate) {
+            router.push(
+              `?country=${params.get("country")}&city=${v}&startDate=${
+                filterData.selectionRangeDate.startDate
+              }&endDate=${filterData.selectionRangeDate.endDate}`
+            );
+          } else {
+            router.push(`?country=${params.get("country")}&city=${v}`);
+          }
         }}
         value={filterData.city}
       />
@@ -79,10 +89,31 @@ const FilterEvents = (props: Props) => {
                 key: "selection",
               },
             }));
+            setSelectedDate(true);
           }
         }}
         value={[filterData.selectionRangeDate]}
       />
+      <Button
+        variant="outlined"
+        color="error"
+        sx={{ fontWeight: "bold" }}
+        onClick={() => {
+          setFilterData({
+            country: null,
+            city: null,
+            selectionRangeDate: {
+              startDate: new Date(),
+              endDate: new Date(),
+              key: "selection",
+            },
+          });
+          setSelectedDate(false);
+          router.push("/");
+        }}
+      >
+        Reset Filter
+      </Button>
     </div>
   );
 };
