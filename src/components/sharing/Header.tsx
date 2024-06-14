@@ -9,9 +9,11 @@ import "@/styles/sharing/header.scss";
 import { getSession, signOut } from "next-auth/react";
 import SettingsDialog from "./SettingsDialog";
 
-type Props = {};
+type Props = {
+  token: string | undefined;
+};
 
-const Header = (props: Props) => {
+const Header = ({ token }: Props) => {
   const [user, setUser] = useState<any>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const getActiveSession = async () => {
@@ -55,7 +57,13 @@ const Header = (props: Props) => {
           <div className="my_account" onClick={() => setShowMenu(!showMenu)}>
             <span className="profile_image">
               {user?.profile_image ? (
-                <Image src={starSVG} alt="star" />
+                <Image
+                  src={user?.profile_image}
+                  alt="profile_image"
+                  width={50}
+                  height={50}
+                  style={{ borderRadius: "100%" }}
+                />
               ) : (
                 getInitials(user?.name)
               )}
@@ -83,6 +91,7 @@ const Header = (props: Props) => {
         setOpenSettingsDialog={(e: boolean) => setOpenSettingsDialog(e)}
         user={user}
         getInitials={getInitials}
+        token={token}
       />
     </>
   );
