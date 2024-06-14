@@ -4,11 +4,13 @@ const nextConfig = {
     metadataBase: "https://event-management-system.gloryna.com",
   },
   images: {
-    domains: [
+    domains:
       process.env.NODE_ENV === "development"
-        ? "localhost"
-        : "https://event-management-system.gloryna.com",
-    ],
+        ? ["localhost"]
+        : [
+            "https://event-management-system.gloryna.com",
+            "https://backend-event-management-system.gloryna.com",
+          ],
   },
 };
 
