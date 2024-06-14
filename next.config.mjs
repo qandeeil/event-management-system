@@ -7,10 +7,7 @@ const nextConfig = {
     domains:
       process.env.NODE_ENV === "development"
         ? ["localhost"]
-        : [
-            "https://backend-event-management-system.gloryna.com",
-            "https://event-management-system.gloryna.com",
-          ],
+        : ["backend-event-management-system.gloryna.com"],
   },
 };
 
