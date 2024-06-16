@@ -12,9 +12,6 @@ const page = (props: Props) => {
   const statusCode: string | null = params.get("status");
   const errorMessage: string | null = params.get("message");
 
-  console.log(">> params: ", params.get("status"));
-  console.log(">> params: ", params.get("message"));
-
   const renderItem = (status: string | null, message: string | null) => {
     return (
       <div className="errorPage">

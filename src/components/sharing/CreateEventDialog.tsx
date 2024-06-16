@@ -88,7 +88,6 @@ const CreateEventDialog = ({
   const handleDateChange = (field: keyof IDate, date: Dayjs | null) => {
     if (date) {
       const newDate = date.toDate();
-      console.log(">> newDate: ", newDate);
       setEventData((prevState) => ({
         ...prevState,
         date: { ...prevState.date, [field]: newDate },
@@ -174,7 +173,6 @@ const CreateEventDialog = ({
           data: formData,
         })
       ).then((response) => {
-        console.log(">> response: ", response);
         setIsLoading(false);
       });
     }

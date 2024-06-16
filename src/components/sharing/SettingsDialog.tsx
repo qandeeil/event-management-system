@@ -105,8 +105,6 @@ const SettingsDialog = ({
       updateAccountThunk({ token: token, data: formData })
     );
 
-    console.log(">> response.payload: ", response.payload);
-
     if (response.payload?.updated) {
       await update({
         ...getSession(),
