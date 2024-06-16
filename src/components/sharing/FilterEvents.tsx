@@ -51,8 +51,8 @@ const FilterEvents = (props: Props) => {
         value={filterData.country}
       />
       <InputFilterEvents
-        list={listOfCountries}
-        title={"Cety"}
+        list={params.get("country") ? listOfCountries : []}
+        title={"City"}
         country={params.get("country")?.toString()}
         route={(v: string) => {
           setFilterData((prevState) => ({
