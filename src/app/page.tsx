@@ -1,5 +1,5 @@
 import "@/styles/registration/login/login.scss";
-import "@/styles/screens/homeScreen.scss";
+import "@/styles/screens/homeScreen/homeScreen.scss";
 import HomeScreen from "@/screens/HomeScreen";
 import { cookies } from "next/headers";
 
