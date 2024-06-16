@@ -8,6 +8,11 @@ interface IRequestCreateEvent {
   token: string;
 }
 
+interface IRequestGetEvents {
+  page: number;
+  token: string | undefined;
+}
+
 export const createEventThunk = createAsyncThunk(
   "event/createEventThunk",
   async (event: IRequestCreateEvent, thunkAPI) => {
@@ -15,6 +20,29 @@ export const createEventThunk = createAsyncThunk(
       const response = await axios.post(
         `${baseURL}/event/create-event`,
         event.data,
+        {
+          headers: {
+            authorization: `Bearer ${event.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+export const getEventsThunk = createAsyncThunk(
+  "event/getEventsThunk",
+  async (event: IRequestGetEvents, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/event/get-events`,
+        { page: event.page },
         {
           headers: {
             authorization: `Bearer ${event.token}`,
