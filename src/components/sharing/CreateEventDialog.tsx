@@ -24,14 +24,15 @@ import { DatePicker, TimePicker } from "@mui/x-date-pickers-pro";
 import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch } from "@/store/hooks";
 import { getOrganizers } from "@/store/user/user";
+import { createEventThunk } from "@/store/event/event";
 
-interface ICreateEvent {
+export interface ICreateEvent {
   title: string;
   description: string;
   date: IDate;
   location: ILocation;
-  seats: Number;
-  price: Number;
+  seats: number;
+  price: number;
   organizers: IOrganizer[];
   preview_photo: File | null;
   cover_photo: File | null;
@@ -81,6 +82,7 @@ const CreateEventDialog = ({
   });
 
   const [allOrganizers, setAllOrganizers] = useState<IOrganizer[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const handleDateChange = (field: keyof IDate, date: Dayjs | null) => {
@@ -132,7 +134,51 @@ const CreateEventDialog = ({
     openCreateEventDialog === true && getAllOrganizers();
   }, [openCreateEventDialog]);
 
-  console.log(">> eventData: ", eventData);
+  const validateEventData = () => {
+    const { title, description, date, location, seats, price, organizers } =
+      eventData;
+    return (
+      title.trim() !== "" &&
+      description.trim() !== "" &&
+      date.start_date !== null &&
+      date.end_date !== null &&
+      location.country.trim() !== "" &&
+      location.city.trim() !== "" &&
+      seats > 0 &&
+      price > 0 &&
+      organizers.length > 0
+    );
+  };
+
+  const createEventHandler = async () => {
+    const formData: any = new FormData();
+    setIsLoading(true);
+    if (validateEventData()) {
+      formData.append("title", eventData.title);
+      formData.append("description", eventData.description);
+      formData.append("start_date", eventData.date.start_date);
+      formData.append("end_date", eventData.date.end_date);
+      formData.append("country", eventData.location.country);
+      formData.append("city", eventData.location.city);
+      formData.append("seats", eventData.seats);
+      formData.append("price", eventData.price);
+      formData.append("organizers", eventData.organizers);
+      if (eventData.preview_photo)
+        formData.append("preview_photo", eventData.preview_photo);
+      if (eventData.cover_photo)
+        formData.append("cover_photo", eventData.cover_photo);
+
+      await dispatch(
+        createEventThunk({
+          token: token,
+          data: formData,
+        })
+      ).then((response) => {
+        console.log(">> response: ", response);
+        setIsLoading(false);
+      });
+    }
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -250,7 +296,7 @@ const CreateEventDialog = ({
                 </div>
                 <InputFilterEvents
                   list={eventData.location.country ? listOfCountries : []}
-                  title={"Cety"}
+                  title={"City"}
                   country={eventData.location.country}
                   route={(v: string) => {
                     setEventData((prevState) => ({
@@ -273,7 +319,7 @@ const CreateEventDialog = ({
                   )}
                   renderOption={(props, option) => (
                     <li {...props} key={option._id}>
-                      {option?.profile_image ? (
+                      {option?.profile_image.length ? (
                         <Image
                           src={option?.profile_image}
                           alt="profile_image"
@@ -282,7 +328,23 @@ const CreateEventDialog = ({
                           style={{ borderRadius: "100%", marginRight: ".5rem" }}
                         />
                       ) : (
-                        getInitials(option?.name)
+                        <span
+                          className="profile_image_orig"
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: "100%",
+                            marginRight: ".5rem",
+                            background: "#bababa",
+                            fontSize: 15,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#fff",
+                          }}
+                        >
+                          {getInitials(option?.name)}
+                        </span>
                       )}
                       {option?.name}
                     </li>
@@ -355,7 +417,11 @@ const CreateEventDialog = ({
           >
             Close
           </Button>
-          <Button onClick={() => {}} sx={{ fontWeight: "bold" }}>
+          <Button
+            onClick={createEventHandler}
+            sx={{ fontWeight: "bold" }}
+            disabled={!validateEventData() || isLoading}
+          >
             Save
           </Button>
         </DialogActions>
