@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   createAccountThunk,
   setIsErrorSignup,
-} from "@/store/registration/user";
+} from "@/store/user/user";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 

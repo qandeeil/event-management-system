@@ -15,7 +15,7 @@ import CustomInput from "../registration/sharing/CustomInput";
 import { IEditAccount } from "../registration/signup/Interfaces";
 import CustomInputPhoneNumber from "../registration/sharing/CustomInputPhoneNumber";
 import { useAppDispatch } from "@/store/hooks";
-import { updateAccountThunk } from "@/store/registration/user";
+import { updateAccountThunk } from "@/store/user/user";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

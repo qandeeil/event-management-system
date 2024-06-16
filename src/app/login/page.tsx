@@ -8,7 +8,7 @@ import CustomInput from "@/components/registration/sharing/CustomInput";
 import CustomButton from "@/components/registration/sharing/CustomButton";
 import { useLayoutEffect, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { loginThunk } from "@/store/registration/user";
+import { loginThunk } from "@/store/user/user";
 import { ILogin } from "@/components/registration/signup/Interfaces";
 import axios from "axios";
 import { signIn } from "next-auth/react";

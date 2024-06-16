@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import DialogPasswordBusiness from "@/components/registration/signup/DialogPasswordBusiness";
 import { InfoAccountTypeCard } from "@/components/registration/signup/Interfaces";
 import { useAppDispatch } from "@/store/hooks";
-import { accountTypeThunk } from "@/store/registration/user";
+import { accountTypeThunk } from "@/store/user/user";
 import Loading from "@/components/sharing/Loading";
 
 type Props = {};
