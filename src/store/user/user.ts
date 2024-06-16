@@ -87,6 +87,25 @@ export const updateAccountThunk = createAsyncThunk(
   }
 );
 
+export const getOrganizers = createAsyncThunk(
+  "user/getOrganizers",
+  async (token: string, thunkAPI) => {
+    try {
+      const response = await axios.get(`${baseURL}/user/get-organizers`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+      return thunkAPI.rejectWithValue({ message: "Unexpected error occurred" });
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,

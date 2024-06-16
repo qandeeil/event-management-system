@@ -8,6 +8,7 @@ import starSVG from "../../../public/icon/star.svg";
 import "@/styles/sharing/header.scss";
 import { getSession, signOut } from "next-auth/react";
 import SettingsDialog from "./SettingsDialog";
+import CreateEventDialog from "./CreateEventDialog";
 
 type Props = {
   token: string | undefined;
@@ -36,7 +37,10 @@ const Header = ({ token }: Props) => {
 
     return firstInitial + secondInitial;
   };
-  const [openSettingsDialog, setOpenSettingsDialog] = React.useState(false);
+  const [openSettingsDialog, setOpenSettingsDialog] =
+    React.useState<boolean>(false);
+  const [openCreateEventDialog, setOpenCreateEventDialog] =
+    React.useState<boolean>(false);
   return (
     <>
       <div className="main_header">
@@ -79,7 +83,10 @@ const Header = ({ token }: Props) => {
             </div>
           </div>
           {user?.admin && (
-            <div className="newEvent">
+            <div
+              className="newEvent"
+              onClick={() => setOpenCreateEventDialog(true)}
+            >
               <Image src={starSVG} alt="starSVG" />
               <span>Create Event</span>
             </div>
@@ -91,6 +98,11 @@ const Header = ({ token }: Props) => {
         setOpenSettingsDialog={(e: boolean) => setOpenSettingsDialog(e)}
         user={user}
         getInitials={getInitials}
+        token={token}
+      />
+      <CreateEventDialog
+        openCreateEventDialog={openCreateEventDialog}
+        setOpenCreateEventDialog={setOpenCreateEventDialog}
         token={token}
       />
     </>

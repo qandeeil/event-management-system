@@ -37,17 +37,13 @@ const InputFilterEvents = ({ list, title, country, route, value }: Props) => {
 
   return (
     <div className="inputFilterEvents">
-      <label htmlFor={`include-input-in-list-${title}`}>{title}</label>
       <Autocomplete
         options={options}
         id={`include-input-in-list-${title}`}
-        includeInputInList
         renderInput={(params) => (
           <TextField
             {...params}
-            label=""
-            variant="standard"
-            placeholder={title}
+            label={title}
           />
         )}
         onChange={(e, v) => route(v)}
