@@ -1,5 +1,7 @@
 .home_screen {
   padding: 0 0;
+  height: 100vh;
+  overflow: hidden;
   & .container {
     display: flex;
   }
