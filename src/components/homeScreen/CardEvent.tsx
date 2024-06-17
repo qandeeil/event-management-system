@@ -52,7 +52,7 @@ const CardEvent = forwardRef<HTMLDivElement, Props>(({ event }, ref) => {
               width={25}
               height={25}
             />
-            <span>{event?.creator.name}</span>
+            <span>{event?.creator?.name}</span>
           </div>
         </div>
         <h1 className="title">{event?.title}</h1>
@@ -60,11 +60,11 @@ const CardEvent = forwardRef<HTMLDivElement, Props>(({ event }, ref) => {
           <Image src={calendarSVG} alt="calendar" width={23} height={23} />
           <div className="from da">
             <span>From</span>
-            <span>{formatDate(event?.date.start_date)}</span>
+            <span>{formatDate(event?.date?.start_date)}</span>
           </div>
           <div className="to da">
             <span>To</span>
-            <span>{formatDate(event?.date.end_date)}</span>
+            <span>{formatDate(event?.date?.end_date)}</span>
           </div>
         </div>
         <div className="location date">
@@ -72,7 +72,7 @@ const CardEvent = forwardRef<HTMLDivElement, Props>(({ event }, ref) => {
           <div className="from da">
             <span>Location</span>
             <span>
-              {event?.location.city}, {event?.location.country}
+              {event?.location?.city}, {event?.location?.country}
             </span>
           </div>
         </div>
