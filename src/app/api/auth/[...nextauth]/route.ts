@@ -21,11 +21,11 @@ const handler = NextAuth({
                 },
               }
             );
-            cookies().set("accessToken", req.body?.token, {
-              httpOnly: true,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "strict",
-            });
+            // cookies().set("accessToken", req.body?.token, {
+            //   httpOnly: true,
+            //   secure: process.env.NODE_ENV === "production",
+            //   sameSite: "strict",
+            // });
             const userInfoData = await userInfoResponse.data;
             return userInfoData;
           } catch (error) {
