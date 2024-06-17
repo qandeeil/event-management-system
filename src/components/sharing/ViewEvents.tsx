@@ -8,9 +8,16 @@ type Props = {
   setPage: any;
   fetchData: boolean;
   isLoading: boolean;
+  token: string;
 };
 
-const ViewEvents = ({ events, setPage, fetchData, isLoading }: Props) => {
+const ViewEvents = ({
+  events,
+  setPage,
+  fetchData,
+  isLoading,
+  token,
+}: Props) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -46,6 +53,7 @@ const ViewEvents = ({ events, setPage, fetchData, isLoading }: Props) => {
             key={item._id}
             event={item}
             ref={index === events.length - 1 ? observerRef : null}
+            token={token}
           />
         ))}
 
