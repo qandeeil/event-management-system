@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/store/provider";
 import { Toaster } from "react-hot-toast";
+import AuthProvider from "./AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -44,7 +45,7 @@ export default function RootLayout({
       <Providers>
         <body className={inter.className}>
           <Toaster position="top-center" reverseOrder={false} />
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </body>
       </Providers>
     </html>
