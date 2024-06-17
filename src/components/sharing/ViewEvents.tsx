@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import "@/styles/sharing/viewEvents.scss";
 import HeaderViewEvent from "../homeScreen/HeaderViewEvent";
 import CardEvent from "../homeScreen/CardEvent";
-import Loading from "./Loading";
 
 type Props = {
   events: any;
