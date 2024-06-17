@@ -6,6 +6,12 @@
   border-top-right-radius: 45px;
   box-shadow: inset 10px 0px 35px -14px rgba(0, 0, 0, 0.1);
   height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  padding-bottom: 10rem;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   & .container-card-events {
     margin-top: 37px;
     display: flex;
