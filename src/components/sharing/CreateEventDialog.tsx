@@ -173,6 +173,9 @@ const CreateEventDialog = ({
           data: formData,
         })
       ).then((response) => {
+        if (response.payload) {
+          window.location.reload();
+        }
         setIsLoading(false);
       });
     }
