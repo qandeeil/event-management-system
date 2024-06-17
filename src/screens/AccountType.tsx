@@ -9,10 +9,7 @@ import CustomButton from "@/components/registration/sharing/CustomButton";
 import { ISignup } from "@/components/registration/signup/Interfaces";
 import CustomInputPhoneNumber from "@/components/registration/sharing/CustomInputPhoneNumber";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  createAccountThunk,
-  setIsErrorSignup,
-} from "@/store/user/user";
+import { createAccountThunk, setIsErrorSignup } from "@/store/user/user";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 
@@ -24,7 +21,7 @@ type Props = {
 
 const AccountType = ({ title, description, token }: Props) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.userSlice);
+  const user: any = useAppSelector((state) => state.userSlice);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<ISignup>({
     token: token,
@@ -78,7 +75,7 @@ const AccountType = ({ title, description, token }: Props) => {
             description={description}
           />
           <CustomInput
-            lable={"Full name"}
+            lable={title === "business" ? "Business name" : "Full name"}
             placeholder={"Full name"}
             type={"text"}
             onChange={handleInputChange}
