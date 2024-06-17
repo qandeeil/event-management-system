@@ -54,6 +54,7 @@ const HomeScreen = ({}: Props) => {
           setPage={setPage}
           fetchData={fetchData}
           isLoading={isLoading}
+          token={token}
         />
       </div>
     </div>
