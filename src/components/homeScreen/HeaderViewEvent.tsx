@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import "@/styles/screens/homeScreen/headerViewEvent.scss";
 
-type Props = {};
+type Props = {
+  expiredEvent: boolean;
+  setExpiredEvent: (e: boolean) => void;
+};
 
-const HeaderViewEvent = (props: Props) => {
-  const [filterEvent, setFilterEvent] = useState<Number>(0);
+const HeaderViewEvent = ({ expiredEvent, setExpiredEvent }: Props) => {
   return (
     <div className="headerViewEvent">
       <div
-        className={`upc ${filterEvent === 0 && "active"}`}
-        onClick={() => setFilterEvent(0)}
+        className={`upc ${expiredEvent === false && "active"}`}
+        onClick={() => setExpiredEvent(false)}
       >
         <span>Upcoming Events</span>
       </div>
       <div
-        className={`upc ${filterEvent === 1 && "active"}`}
-        onClick={() => setFilterEvent(1)}
+        className={`upc ${expiredEvent === true && "active"}`}
+        onClick={() => setExpiredEvent(true)}
       >
         <span>Past Events</span>
       </div>
