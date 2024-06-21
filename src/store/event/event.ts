@@ -90,6 +90,32 @@ export const getEventIdThunk = createAsyncThunk(
   }
 );
 
+export const addRatingEventThunk = createAsyncThunk(
+  "event/addRatingEventThunk",
+  async (
+    data: { event_id: string | null; token: string | undefined; rate: number },
+    thunkAPI
+  ) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/rating/add-rate`,
+        { event_id: data.event_id, rate: data.rate },
+        {
+          headers: {
+            authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 interface IState {
   isLoading: boolean;
   isError: boolean;
