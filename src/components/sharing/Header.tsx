@@ -74,7 +74,7 @@ const Header = ({ token }: Props) => {
                   getInitials(user?.name)
                 )}
               </span>
-              <span className="profile_name">{user?.name?.slice(0, 15)}</span>
+              <span className="profile_name">{user?.name?.slice(0, 9)}...</span>
             </div>
 
             <Image src={arrowDownSVG} alt="arrow" width={22} height={22} />
