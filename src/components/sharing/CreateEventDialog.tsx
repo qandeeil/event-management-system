@@ -40,14 +40,14 @@ export interface ICreateEvent {
   cover_photo_url: any;
 }
 
-interface IDate {
-  start_date: Date | null;
-  end_date: Date | null;
+export interface IDate {
+  start_date: any;
+  end_date: any;
 }
 
-interface ILocation {
-  country: string;
-  city: string;
+export interface ILocation {
+  country: any;
+  city: any;
 }
 
 interface IOrganizer {
