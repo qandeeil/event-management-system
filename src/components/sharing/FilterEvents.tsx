@@ -75,8 +75,8 @@ const FilterEvents = (props: Props) => {
         onChange={(v: any) => {
           if (v.selection.startDate && v.selection.endDate) {
             router.push(
-              `?country=${params.get("country") || "all"}&city=${
-                params.get("city") || "all"
+              `?country=${params.get("country") || ""}&city=${
+                params.get("city") || ""
               }&startDate=${v.selection.startDate}&endDate=${
                 v.selection.endDate
               }`
@@ -109,7 +109,7 @@ const FilterEvents = (props: Props) => {
             },
           });
           setSelectedDate(false);
-          router.push("/");
+          window.location.href = "/";
         }}
       >
         Reset Filter
