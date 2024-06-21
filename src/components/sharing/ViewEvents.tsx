@@ -9,6 +9,8 @@ type Props = {
   fetchData: boolean;
   isLoading: boolean;
   token: string;
+  expiredEvent: boolean;
+  setExpiredEvent: (e: boolean) => void;
 };
 
 const ViewEvents = ({
@@ -17,6 +19,8 @@ const ViewEvents = ({
   fetchData,
   isLoading,
   token,
+  expiredEvent,
+  setExpiredEvent,
 }: Props) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -46,7 +50,10 @@ const ViewEvents = ({
 
   return (
     <div className="viewEvents">
-      <HeaderViewEvent />
+      <HeaderViewEvent
+        expiredEvent={expiredEvent}
+        setExpiredEvent={setExpiredEvent}
+      />
       <div className="container-card-events">
         {events.map((item: any, index: number) => (
           <CardEvent
