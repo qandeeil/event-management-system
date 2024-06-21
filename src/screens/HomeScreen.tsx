@@ -56,6 +56,7 @@ const HomeScreen = ({}: Props) => {
 
       if (!response.payload?.length) {
         setFetchData(false);
+        setEvents([]);
       } else {
         setEvents(response.payload);
       }
