@@ -62,6 +62,7 @@ const SettingsDialog = ({
       setImageUrl(URL.createObjectURL(file));
     }
   };
+  const [newDataUser, setNewDataUser] = useState<any>();
   const [userData, setUserData] = useState<IEditAccount>({
     name: user?.name,
     email: user?.email,
@@ -106,16 +107,25 @@ const SettingsDialog = ({
     const response = await dispatch(
       updateAccountThunk({ token: token, data: formData })
     );
-
+    console.log(response);
     if (response.payload?.updated) {
-      await update({
-        ...getSession(),
-        user: response.payload.user,
-      });
-      window.location.reload();
+      setNewDataUser(response.payload.user);
     }
     if (response) setIsLoading(false);
   };
+
+  const updateSession = async () => {
+    await update({
+      ...getSession(),
+      user: newDataUser,
+    }).then(() => window.location.reload());
+  };
+
+  useEffect(() => {
+    if (newDataUser) {
+      updateSession();
+    }
+  }, [newDataUser]);
 
   return (
     <Dialog
