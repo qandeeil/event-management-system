@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../baseURL";
-import { ICreateEvent } from "@/components/sharing/CreateEventDialog";
+import {
+  ICreateEvent,
+  IDate,
+  ILocation,
+} from "@/components/sharing/CreateEventDialog";
 
 interface IRequestCreateEvent {
   data: ICreateEvent;
@@ -11,6 +15,11 @@ interface IRequestCreateEvent {
 interface IRequestGetEvents {
   page: number;
   token: string | undefined;
+  filter: {
+    data: IDate;
+    location: ILocation;
+    expired: boolean;
+  };
 }
 
 export const createEventThunk = createAsyncThunk(
@@ -42,7 +51,7 @@ export const getEventsThunk = createAsyncThunk(
     try {
       const response = await axios.post(
         `${baseURL}/event/get-events`,
-        { page: event.page },
+        { page: event.page, filter: event.filter },
         {
           headers: {
             authorization: `Bearer ${event.token}`,
