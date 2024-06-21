@@ -76,6 +76,11 @@ const CardEvent = forwardRef<HTMLDivElement, Props>(({ event, token }, ref) => {
           <div className="paid">
             <span>Paid</span>
           </div>
+          {event?.expired && (
+            <div className="expired">
+              <span>Expired</span>
+            </div>
+          )}
         </div>
       </div>
       <div className="info-event">
