@@ -3,12 +3,16 @@ import Header from "@/components/sharing/Header";
 import { getSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import "@/styles/screens/eventScreen/eventScreen.scss";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { getEventIdThunk } from "@/store/event/event";
+import { addRatingEventThunk, getEventIdThunk } from "@/store/event/event";
 import Image from "next/image";
 import LINK_BACKEND from "@/store/baseURL";
 import { format } from "date-fns";
+import { Rating, ThinStar } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
+import { Button } from "@mui/material";
+import toast from "react-hot-toast";
 
 type Props = {};
 
@@ -17,32 +21,44 @@ const EventScreen = (props: Props) => {
   const params = useSearchParams();
   const router = useRouter();
   const [event, setEvent] = useState<any>();
+  const [ratingEvent, setRatingEvent] = useState(event?.rating);
+  const [rating, setRating] = useState(event?.ratingUser);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    getSessionToken();
+  }, []);
+
   const getSessionToken = async () => {
     const session: any = await getSession();
     setToken(session?.user.token);
   };
-  const getEventHandler = async () => {
-    setIsLoading(true);
+  const getEventHandler = async (loading: boolean) => {
+    setIsLoading(loading);
     const response = await dispatch(
       getEventIdThunk({ token: token, _id: params.get("id") })
     );
     if (response) setIsLoading(false);
     if (response.payload?._id) {
       setEvent(response.payload);
+      setRatingEvent(response.payload.rating);
+      setRating(response.payload.ratingUser);
     } else {
       router.push("/404");
     }
   };
-  useEffect(() => {
-    getSessionToken();
-  }, []);
+
   useEffect(() => {
     if (token) {
-      getEventHandler();
+      getEventHandler(true);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      getEventHandler(false);
+    }
+  }, [rating]);
 
   const formatDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
@@ -52,6 +68,17 @@ const EventScreen = (props: Props) => {
   const formatTime = (dateString: string | number | Date) => {
     const date = new Date(dateString);
     return format(date, "hh:mm a");
+  };
+
+  const myStyles = {
+    itemShapes: ThinStar,
+    activeFillColor: "#ffb700",
+    inactiveFillColor: "#545454bf",
+  };
+
+  const calculateProgressWidth = (count: any, total: any) => {
+    if (total === 0) return "0%";
+    return `${(count / total) * 100}%`;
   };
 
   return (
@@ -92,8 +119,61 @@ const EventScreen = (props: Props) => {
           <div className="information-event">
             <div className="container-tow">
               <div className="header">
-                <h1>{event?.title}</h1>
-                <p>{event?.description}</p>
+                <h1>Creator</h1>
+                <div className="creator">
+                  <Image
+                    src={LINK_BACKEND + "/" + event?.creator.profile_image}
+                    alt={event?.creator.name}
+                    width={100}
+                    height={100}
+                  />
+                  <div className="info-acc">
+                    <span>{event?.creator.name}</span>
+                    <span>{event?.creator.account_type}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="header he2">
+                <h1>Rate this event</h1>
+                <Rating
+                  style={{ maxWidth: 200 }}
+                  value={rating}
+                  onChange={async (e: number) => {
+                    setRating(e);
+                    toast.promise(
+                      Promise.resolve(
+                        dispatch(
+                          addRatingEventThunk({
+                            token,
+                            event_id: event?._id,
+                            rate: e,
+                          })
+                        )
+                      ).then((response) => {
+                        if (response.payload?.result) {
+                          return response.payload?.message;
+                        }
+                      }),
+                      {
+                        loading: "Saving...",
+                        success: (message) => <b>{message}</b>, // Pass message as child
+                        error: <b>Please try again.</b>,
+                      }
+                    );
+                  }}
+                  itemStyles={myStyles}
+                />
+              </div>
+
+              <div className="header he2">
+                <Button
+                  variant="contained"
+                  color="success"
+                  sx={{ height: 50, fontWeight: "bold" }}
+                >
+                  Reservation
+                </Button>
               </div>
             </div>
             <div className="container-one">
@@ -127,6 +207,95 @@ const EventScreen = (props: Props) => {
                   <div className="fe">
                     <span>Price</span>
                     <span>$ {event.price}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="step-tow con2">
+                <h1 className="title">Ratings</h1>
+                <div className="container-org">
+                  <div className="section-one">
+                    <h1>{event?.rating}</h1>
+                    <Rating
+                      style={{ maxWidth: 140 }}
+                      value={ratingEvent}
+                      onChange={setRatingEvent}
+                      itemStyles={myStyles}
+                      readOnly
+                    />
+                    <span>{event?.number_of_reviews}</span>
+                  </div>
+                  <div className="section-one section-two">
+                    <div className="container-progress">
+                      <span>5</span>
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: calculateProgressWidth(
+                              event?.categories_of_evaluations.five,
+                              event?.number_of_reviews
+                            ),
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="container-progress">
+                      <span>4</span>
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: calculateProgressWidth(
+                              event?.categories_of_evaluations.four,
+                              event?.number_of_reviews
+                            ),
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="container-progress">
+                      <span>3</span>
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: calculateProgressWidth(
+                              event?.categories_of_evaluations.three,
+                              event?.number_of_reviews
+                            ),
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="container-progress">
+                      <span>2</span>
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: calculateProgressWidth(
+                              event?.categories_of_evaluations.two,
+                              event?.number_of_reviews
+                            ),
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="container-progress">
+                      <span>1</span>
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: calculateProgressWidth(
+                              event?.categories_of_evaluations.one,
+                              event?.number_of_reviews
+                            ),
+                          }}
+                        ></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

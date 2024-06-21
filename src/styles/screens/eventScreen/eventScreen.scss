@@ -68,7 +68,7 @@
         flex: 2;
         & .step-one {
           padding-bottom: 2rem;
-          border-bottom: 1.5px solid #c003065e;
+          border-bottom: 1.5px rgba(128, 128, 128, 0.516) solid;
           border-radius: 1px;
           & .header {
             display: flex;
@@ -96,6 +96,50 @@
             }
           }
         }
+        & .con2 {
+          border-bottom: 1.5px rgba(128, 128, 128, 0.516) solid;
+          border-radius: 1px;
+          padding-bottom: 2rem;
+          & .section-one {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            & h1 {
+              font-size: 42px;
+            }
+          }
+          & .section-two {
+            margin-left: 1rem;
+            & span {
+              font-weight: bold;
+            }
+            .container-progress {
+              display: flex;
+              align-items: center;
+              margin-bottom: 8px;
+            }
+
+            .container-progress span {
+              width: 30px;
+              text-align: right;
+              margin-right: 15px;
+            }
+
+            .progress {
+              width: 250px;
+              background-color: #e0e0e0;
+              border-radius: 5px;
+              overflow: hidden;
+              height: 15px;
+            }
+
+            .progress-bar {
+              height: 100%;
+              background-color: #76c7c0;
+            }
+          }
+        }
         & .step-tow {
           padding-top: 2rem;
           & .title {
@@ -105,6 +149,7 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+            align-items: center;
             & .container-person {
               width: 260px;
               background-color: #00000095;
@@ -135,7 +180,41 @@
       & .container-tow {
         flex: 1;
         padding-right: 24px;
-        border-right: 1px red solid;
+        border-right: 1.5px rgba(128, 128, 128, 0.516) solid;
+        & .header {
+          padding-bottom: 2rem;
+          & h1 {
+            font-size: 22px;
+          }
+        }
+        & .he2 {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        & .creator {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 1rem;
+          & img {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+          }
+          & .info-acc {
+            display: flex;
+            flex-direction: column;
+            & span:first-child {
+              font-weight: bold;
+              font-size: 16px;
+            }
+            & span:last-child {
+              color: #0000008e;
+              font-size: 14px;
+            }
+          }
+        }
       }
     }
   }
