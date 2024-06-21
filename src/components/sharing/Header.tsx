@@ -9,6 +9,7 @@ import "@/styles/sharing/header.scss";
 import { getSession, signOut } from "next-auth/react";
 import SettingsDialog from "./SettingsDialog";
 import CreateEventDialog from "./CreateEventDialog";
+import arrowDownSVG from "../../../public/icon/arrow_down.svg";
 
 type Props = {
   token: string | undefined;
@@ -59,20 +60,24 @@ const Header = ({ token }: Props) => {
         </div>
         <div className="container">
           <div className="my_account" onClick={() => setShowMenu(!showMenu)}>
-            <span className="profile_image">
-              {user?.profile_image ? (
-                <Image
-                  src={user?.profile_image}
-                  alt="profile_image"
-                  width={50}
-                  height={50}
-                  style={{ borderRadius: "100%" }}
-                />
-              ) : (
-                getInitials(user?.name)
-              )}
-            </span>
-            <span className="profile_name">{user?.name?.slice(0, 15)}</span>
+            <div className="info-iser-account">
+              <span className="profile_image">
+                {user?.profile_image ? (
+                  <Image
+                    src={user?.profile_image}
+                    alt="profile_image"
+                    width={50}
+                    height={50}
+                    style={{ borderRadius: "100%" }}
+                  />
+                ) : (
+                  getInitials(user?.name)
+                )}
+              </span>
+              <span className="profile_name">{user?.name?.slice(0, 15)}</span>
+            </div>
+
+            <Image src={arrowDownSVG} alt="arrow" width={22} height={22} />
             <div className={`box-menu ${showMenu ? "open" : ""}`}>
               <ul>
                 <li>My Favorites</li>
