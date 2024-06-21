@@ -37,8 +37,14 @@
       height: 50px;
       width: 200px;
       cursor: pointer;
-      justify-content: center;
+      justify-content: space-between;
       position: relative;
+      padding: 0px 14px;
+      & .info-iser-account {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
       & .profile_image {
         width: 24px;
         height: 24px;
