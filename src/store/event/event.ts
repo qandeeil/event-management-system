@@ -68,6 +68,28 @@ export const getEventsThunk = createAsyncThunk(
   }
 );
 
+export const getEventIdThunk = createAsyncThunk(
+  "event/getEventIdThunk",
+  async (data: { _id: string | null; token: string | undefined }, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${baseURL}/event/get-event/${data._id}`,
+        {
+          headers: {
+            authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 interface IState {
   isLoading: boolean;
   isError: boolean;

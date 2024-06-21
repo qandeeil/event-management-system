@@ -1,0 +1,186 @@
+.event-screen {
+  & .container-event {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & .header-info {
+      width: 100%;
+      height: 800px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      & .cover-photo {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        z-index: -1;
+      }
+      & .info {
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 138px;
+        width: 90%;
+        & .preview-photo {
+          object-fit: cover;
+          border-radius: 6px;
+        }
+        & .text-info {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          background: linear-gradient(
+            to left,
+            rgba(241, 39, 17, 0.492) 0%,
+            rgba(245, 175, 25, 0.522) 100%
+          );
+          border-radius: 6px;
+          padding: 12px;
+          width: fit-content;
+          & h1 {
+            color: #fff;
+            font-weight: bold;
+            font-size: 66px;
+            width: 90%;
+          }
+          & p {
+            width: 90%;
+            font-size: 30px;
+            color: #fff;
+          }
+        }
+      }
+    }
+    & .information-event {
+      padding-bottom: 4rem;
+      display: flex;
+      width: 70%;
+      margin-top: 2.5rem;
+      & .container-one {
+        padding-left: 24px;
+        flex: 2;
+        & .step-one {
+          padding-bottom: 2rem;
+          border-bottom: 1.5px solid #c003065e;
+          border-radius: 1px;
+          & .header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+          & .feet {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            gap: 10px;
+            & .fe {
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+              width: 35%;
+              & span:first-of-type {
+                font-weight: 700;
+                font-size: 18px;
+                color: #c00305;
+              }
+              & label {
+                color: #c00305;
+              }
+            }
+          }
+        }
+        & .step-tow {
+          padding-top: 2rem;
+          & .title {
+            margin-bottom: 2rem;
+          }
+          & .container-org {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            & .container-person {
+              width: 260px;
+              background-color: #00000095;
+              border-radius: 8px;
+              overflow: hidden;
+              & img {
+                object-fit: cover;
+              }
+              & .info-pers {
+                padding: 12px 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                flex-direction: column;
+                gap: 8px;
+                & span:first-child {
+                  font-weight: bold;
+                }
+                & span:last-child {
+                  color: #ffffffb0;
+                }
+              }
+            }
+          }
+        }
+      }
+      & .container-tow {
+        flex: 1;
+        padding-right: 24px;
+        border-right: 1px red solid;
+      }
+    }
+  }
+
+  & .loader {
+    width: 50px;
+    aspect-ratio: 1;
+    display: grid;
+    border-radius: 50%;
+    background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.5) 30%,
+          #00000000 0 70%,
+          rgb(0, 0, 0) 0
+        )
+        50%/8% 100%,
+      linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.25) 30%,
+          #00000000 0 70%,
+          rgba(0, 0, 0, 0.75) 0
+        )
+        50%/100% 8%;
+    background-repeat: no-repeat;
+    animation: l23 1s infinite steps(12);
+  }
+
+  & .loader::before,
+  & .loader::after {
+    content: "";
+    grid-area: 1/1;
+    border-radius: 50%;
+    background: inherit;
+    opacity: 0.915;
+    transform: rotate(30deg);
+  }
+
+  & .loader::after {
+    opacity: 0.83;
+    transform: rotate(60deg);
+  }
+}
+
+@keyframes l23 {
+  100% {
+    transform: rotate(1turn);
+  }
+}

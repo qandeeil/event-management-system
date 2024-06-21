@@ -55,14 +55,15 @@ const ViewEvents = ({
         setExpiredEvent={setExpiredEvent}
       />
       <div className="container-card-events">
-        {events.map((item: any, index: number) => (
-          <CardEvent
-            key={item._id}
-            event={item}
-            ref={index === events.length - 1 ? observerRef : null}
-            token={token}
-          />
-        ))}
+        {events?.length &&
+          events.map((item: any, index: number) => (
+            <CardEvent
+              key={item._id}
+              event={item}
+              ref={index === events.length - 1 ? observerRef : null}
+              token={token}
+            />
+          ))}
 
         {isLoading ? (
           <div className="loading-content">

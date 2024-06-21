@@ -53,10 +53,11 @@ const HomeScreen = ({}: Props) => {
           },
         })
       );
-      setEvents(response.payload);
 
       if (!response.payload?.length) {
         setFetchData(false);
+      } else {
+        setEvents(response.payload);
       }
       setIsLoading(false);
     },
