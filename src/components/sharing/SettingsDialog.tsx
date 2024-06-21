@@ -53,6 +53,7 @@ const SettingsDialog = ({
     setOpenSettingsDialog(false);
   };
   const [selectImage, setSelectImage] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<any>(null);
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -92,6 +93,7 @@ const SettingsDialog = ({
   }, [selectImage]);
 
   const updateDataHandler = async () => {
+    setIsLoading(true);
     const formData: any = new FormData();
     formData.append("token", token);
     formData.append("name", userData.name);
@@ -112,6 +114,7 @@ const SettingsDialog = ({
       });
       window.location.reload();
     }
+    if (response) setIsLoading(false);
   };
 
   return (
@@ -218,7 +221,11 @@ const SettingsDialog = ({
         <Button onClick={handleClose} color="error" sx={{ fontWeight: "bold" }}>
           Close
         </Button>
-        <Button onClick={updateDataHandler} sx={{ fontWeight: "bold" }}>
+        <Button
+          onClick={updateDataHandler}
+          sx={{ fontWeight: "bold" }}
+          disabled={isLoading}
+        >
           Save
         </Button>
       </DialogActions>
