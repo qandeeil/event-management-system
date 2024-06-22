@@ -17,7 +17,7 @@ const HomeScreen = ({}: Props) => {
   const [expiredEvent, setExpiredEvent] = useState<boolean>(false);
   const [events, setEvents] = useState<any[]>([]);
   const [fetchData, setFetchData] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const [token, setToken] = useState<string>("");
   const getSessionToken = async () => {
