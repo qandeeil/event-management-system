@@ -27,7 +27,6 @@ const EventScreen = (props: Props) => {
   const [event, setEvent] = useState<any>();
   const [ratingEvent, setRatingEvent] = useState(event?.rating);
   const [rating, setRating] = useState(event?.ratingUser);
-  const [reservation, setReservation] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -63,7 +62,7 @@ const EventScreen = (props: Props) => {
     if (token) {
       getEventHandler(false);
     }
-  }, [rating, reservation]);
+  }, [rating]);
 
   const formatDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
@@ -179,7 +178,6 @@ const EventScreen = (props: Props) => {
                     sx={{ height: 50, fontWeight: "bold" }}
                     disabled={event?.expired}
                     onClick={() => {
-                      setReservation(!reservation);
                       toast.promise(
                         Promise.resolve(
                           dispatch(
@@ -189,6 +187,7 @@ const EventScreen = (props: Props) => {
                             })
                           )
                         ).then((response) => {
+                          getEventHandler(false);
                           if (response.payload?.result) {
                             return response.payload?.message;
                           } else {
