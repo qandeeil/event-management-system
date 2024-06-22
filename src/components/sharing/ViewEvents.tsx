@@ -64,9 +64,9 @@ const ViewEvents = ({
               token={token}
             />
           ))
-        ) : (
+        ) : !isLoading ? (
           <span>Not found any event</span>
-        )}
+        ) : null}
 
         {isLoading ? (
           <div className="loading-content">
