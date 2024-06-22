@@ -46,7 +46,9 @@ const Header = ({ token }: Props) => {
     <>
       <div className="main_header">
         <div className="contact">
-          <Image src={logo} alt="logo" width={147} height={33} />
+          <a href="/">
+            <Image src={logo} alt="logo" width={147} height={33} />
+          </a>
           <div className="info">
             <div className="phone infoContact">
               <Image src={phoneSVG} alt="phone" />
