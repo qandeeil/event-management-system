@@ -5,7 +5,11 @@ import React, { useEffect, useState } from "react";
 import "@/styles/screens/eventScreen/eventScreen.scss";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { addRatingEventThunk, getEventIdThunk } from "@/store/event/event";
+import {
+  addRatingEventThunk,
+  getEventIdThunk,
+  reservationEventThunk,
+} from "@/store/event/event";
 import Image from "next/image";
 import LINK_BACKEND from "@/store/baseURL";
 import { format } from "date-fns";
@@ -23,6 +27,7 @@ const EventScreen = (props: Props) => {
   const [event, setEvent] = useState<any>();
   const [ratingEvent, setRatingEvent] = useState(event?.rating);
   const [rating, setRating] = useState(event?.ratingUser);
+  const [reservation, setReservation] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -58,7 +63,7 @@ const EventScreen = (props: Props) => {
     if (token) {
       getEventHandler(false);
     }
-  }, [rating]);
+  }, [rating, reservation]);
 
   const formatDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
@@ -167,13 +172,65 @@ const EventScreen = (props: Props) => {
               </div>
 
               <div className="header he2">
-                <Button
-                  variant="contained"
-                  color="success"
-                  sx={{ height: 50, fontWeight: "bold" }}
-                >
-                  Reservation
-                </Button>
+                {!event?.event_origin && (
+                  <Button
+                    variant="contained"
+                    color={event?.booked ? "error" : "success"}
+                    sx={{ height: 50, fontWeight: "bold" }}
+                    disabled={event?.expired}
+                    onClick={() => {
+                      setReservation(!reservation);
+                      toast.promise(
+                        Promise.resolve(
+                          dispatch(
+                            reservationEventThunk({
+                              token,
+                              event_id: event?._id,
+                            })
+                          )
+                        ).then((response) => {
+                          if (response.payload?.result) {
+                            return response.payload?.message;
+                          } else {
+                            throw new Error(
+                              response.payload?.message || "An error occurred"
+                            );
+                          }
+                        }),
+                        {
+                          loading: "Saving...",
+                          success: (message) => <b>{message}</b>,
+                          error: (error) => (
+                            <b>{error.message || "Please try again."}</b>
+                          ),
+                        }
+                      );
+                    }}
+                  >
+                    {event?.booked ? "Cancel reservation" : "Reservation"}{" "}
+                    {event?.expired && "(Expired)"}
+                  </Button>
+                )}
+
+                {event?.event_origin && (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="info"
+                      sx={{ height: 50, fontWeight: "bold" }}
+                      disabled={event?.expired}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      sx={{ height: 50, fontWeight: "bold" }}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
             <div className="container-one">
@@ -201,7 +258,7 @@ const EventScreen = (props: Props) => {
                   <div className="fe">
                     <span>Seats</span>
                     <span>
-                      <label>12</label> / 50
+                      <label>{event?.numberBooked}</label> / {event?.seats}
                     </span>
                   </div>
                   <div className="fe">

@@ -116,6 +116,32 @@ export const addRatingEventThunk = createAsyncThunk(
   }
 );
 
+export const reservationEventThunk = createAsyncThunk(
+  "event/reservationEventThunk",
+  async (
+    data: { event_id: string | null; token: string | undefined },
+    thunkAPI
+  ) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/reservation`,
+        { event_id: data.event_id },
+        {
+          headers: {
+            authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 interface IState {
   isLoading: boolean;
   isError: boolean;
