@@ -25,6 +25,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch } from "@/store/hooks";
 import { getOrganizers } from "@/store/user/user";
 import { createEventThunk } from "@/store/event/event";
+import { useRouter } from "next/navigation";
 
 export interface ICreateEvent {
   title: string;
@@ -84,6 +85,7 @@ const CreateEventDialog = ({
   const [allOrganizers, setAllOrganizers] = useState<IOrganizer[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleDateChange = (field: keyof IDate, date: Dayjs | null) => {
     if (date) {
@@ -173,8 +175,8 @@ const CreateEventDialog = ({
           data: formData,
         })
       ).then((response) => {
-        if (response.payload) {
-          window.location.reload();
+        if (response.payload?.result) {
+          router.push(`/event?id=${response.payload._id}`);
         }
         setIsLoading(false);
       });
