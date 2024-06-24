@@ -187,6 +187,44 @@ export const reservationEventThunk = createAsyncThunk(
   }
 );
 
+export const getFavoritesEvent = createAsyncThunk(
+  "event/getFavoritesEvent",
+  async (token: string, thunkAPI) => {
+    try {
+      const response = await axios.get(`${baseURL}/event/my-favorites`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+export const getReservationsEvent = createAsyncThunk(
+  "event/getReservationsEvent",
+  async (token: string, thunkAPI) => {
+    try {
+      const response = await axios.get(`${baseURL}/event/my-reservations`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 interface IState {
   isLoading: boolean;
   isError: boolean;
