@@ -73,7 +73,7 @@ export const deleteEventThunk = createAsyncThunk(
   async (event: any, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `${baseURL}/delete-event?_id=${event.event_id}`,
+        `${baseURL}/event/delete-event/${event.event_id}`,
         {
           headers: {
             authorization: `Bearer ${event.token}`,
