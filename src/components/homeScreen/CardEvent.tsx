@@ -50,106 +50,102 @@ const CardEvent = forwardRef<HTMLDivElement, Props>(({ event, token }, ref) => {
   };
 
   return (
-    <Link href={`/event?id=${event?._id}`}>
-      <div className="card-event" ref={ref}>
-        <div className="container-image">
-          <div className="image">
+    <div className="card-event" ref={ref}>
+      <Link className="linkCard" href={`/event?id=${event?._id}`}></Link>
+      <div className="container-image">
+        <div className="image">
+          <Image
+            src={LINK_BACKEND + "/" + event?.cover_photo}
+            alt="image"
+            width={200}
+            height={200}
+          />
+        </div>
+        <div className="container-top">
+          <div className="price">
+            <span>$ {event?.price}</span>
+          </div>
+          <div className="save" onClick={() => actionFavorites(event?._id)}>
             <Image
-              src={LINK_BACKEND + "/" + event?.cover_photo}
-              alt="image"
-              width={200}
-              height={200}
+              src={isFavorite ? bookmarkActiveSVG : bookmarkSVG}
+              alt="bookmark"
+              width={50}
+              height={50}
             />
           </div>
-          <div className="container-top">
-            <div className="price">
-              <span>$ {event?.price}</span>
-            </div>
-            <div className="save" onClick={() => actionFavorites(event?._id)}>
-              <Image
-                src={isFavorite ? bookmarkActiveSVG : bookmarkSVG}
-                alt="bookmark"
-                width={50}
-                height={50}
-              />
-            </div>
+        </div>
+        <div className="container-bottom">
+          <div className="paid">
+            <span>Paid</span>
           </div>
-          <div className="container-bottom">
-            <div className="paid">
-              <span>Paid</span>
+          {event?.expired && (
+            <div className="expired">
+              <span>Expired</span>
             </div>
-            {event?.expired && (
-              <div className="expired">
-                <span>Expired</span>
-              </div>
-            )}
+          )}
+        </div>
+      </div>
+      <div className="info-event">
+        <div className="by">
+          <span>By</span>
+          <div className="info-created">
+            <Image
+              src={LINK_BACKEND + "/" + event?.creator?.profile_image}
+              alt="image"
+              width={25}
+              height={25}
+            />
+            <span>{event?.creator?.name}</span>
           </div>
         </div>
-        <div className="info-event">
-          <div className="by">
-            <span>By</span>
-            <div className="info-created">
-              <Image
-                src={LINK_BACKEND + "/" + event?.creator?.profile_image}
-                alt="image"
-                width={25}
-                height={25}
-              />
-              <span>{event?.creator?.name}</span>
-            </div>
+        <h1 className="title">{event?.title}</h1>
+        <div className="date">
+          <Image src={calendarSVG} alt="calendar" width={23} height={23} />
+          <div className="from da">
+            <span>From</span>
+            <span>{formatDate(event?.date?.start_date)}</span>
           </div>
-          <h1 className="title">{event?.title}</h1>
-          <div className="date">
-            <Image src={calendarSVG} alt="calendar" width={23} height={23} />
-            <div className="from da">
-              <span>From</span>
-              <span>{formatDate(event?.date?.start_date)}</span>
-            </div>
-            <div className="to da">
-              <span>To</span>
-              <span>{formatDate(event?.date?.end_date)}</span>
-            </div>
-          </div>
-          <div className="location date">
-            <Image src={locationSVG} alt="location" width={23} height={23} />
-            <div className="from da">
-              <span>Location</span>
-              <span>
-                {event?.location?.city}, {event?.location?.country}
-              </span>
-            </div>
+          <div className="to da">
+            <span>To</span>
+            <span>{formatDate(event?.date?.end_date)}</span>
           </div>
         </div>
-        <div className="extra-info-event">
-          <div className="ex">
-            <div className="rating">
-              <span>Rating</span>
-              <span>{percentage}%</span>
-            </div>
-            <div className="progress-bar">
-              <div
-                className="progress"
-                style={{ width: `${percentage}%` }}
-              ></div>
-            </div>
-          </div>
-          <div className="ex">
-            <div className="rating">
-              <span>Upcoming</span>
-              <span>
-                {bookedSeats}/{totalSeats}
-              </span>
-            </div>
-            <div className="progress-bar">
-              <div
-                className="progress"
-                style={{ width: `${seatsPercentage}%` }}
-              ></div>
-            </div>
+        <div className="location date">
+          <Image src={locationSVG} alt="location" width={23} height={23} />
+          <div className="from da">
+            <span>Location</span>
+            <span>
+              {event?.location?.city}, {event?.location?.country}
+            </span>
           </div>
         </div>
       </div>
-    </Link>
+      <div className="extra-info-event">
+        <div className="ex">
+          <div className="rating">
+            <span>Rating</span>
+            <span>{percentage}%</span>
+          </div>
+          <div className="progress-bar">
+            <div className="progress" style={{ width: `${percentage}%` }}></div>
+          </div>
+        </div>
+        <div className="ex">
+          <div className="rating">
+            <span>Upcoming</span>
+            <span>
+              {bookedSeats}/{totalSeats}
+            </span>
+          </div>
+          <div className="progress-bar">
+            <div
+              className="progress"
+              style={{ width: `${seatsPercentage}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 });
 
