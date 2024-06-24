@@ -17,6 +17,7 @@ import { Rating, ThinStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Button } from "@mui/material";
 import toast from "react-hot-toast";
+import EditEventDialog from "@/components/sharing/EditEventDialog";
 
 type Props = {};
 
@@ -28,6 +29,8 @@ const EventScreen = (props: Props) => {
   const [ratingEvent, setRatingEvent] = useState(event?.rating);
   const [rating, setRating] = useState(event?.ratingUser);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [openEditEventDialog, setOpenEditEventDialog] =
+    React.useState<boolean>(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
     getSessionToken();
@@ -218,6 +221,7 @@ const EventScreen = (props: Props) => {
                       color="info"
                       sx={{ height: 50, fontWeight: "bold" }}
                       disabled={event?.expired}
+                      onClick={() => setOpenEditEventDialog(true)}
                     >
                       Edit
                     </Button>
@@ -379,6 +383,13 @@ const EventScreen = (props: Props) => {
           </div>
         </div>
       )}
+      <EditEventDialog
+        openEditEventDialog={openEditEventDialog}
+        setOpenEditEventDialog={setOpenEditEventDialog}
+        token={token}
+        data={event}
+        getEventHandler={getEventHandler}
+      />
     </div>
   );
 };
