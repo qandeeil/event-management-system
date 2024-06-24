@@ -45,6 +45,29 @@ export const createEventThunk = createAsyncThunk(
   }
 );
 
+export const updateEventThunk = createAsyncThunk(
+  "event/updateEventThunk",
+  async (event: any, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/event/update-event`,
+        event.data,
+        {
+          headers: {
+            authorization: `Bearer ${event.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 export const getEventsThunk = createAsyncThunk(
   "event/getEventsThunk",
   async (event: IRequestGetEvents, thunkAPI) => {
