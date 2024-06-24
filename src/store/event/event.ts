@@ -68,6 +68,28 @@ export const updateEventThunk = createAsyncThunk(
   }
 );
 
+export const deleteEventThunk = createAsyncThunk(
+  "event/deleteEventThunk",
+  async (event: any, thunkAPI) => {
+    try {
+      const response = await axios.delete(
+        `${baseURL}/delete-event?_id=${event.event_id}`,
+        {
+          headers: {
+            authorization: `Bearer ${event.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 export const getEventsThunk = createAsyncThunk(
   "event/getEventsThunk",
   async (event: IRequestGetEvents, thunkAPI) => {
