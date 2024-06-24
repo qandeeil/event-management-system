@@ -10,6 +10,7 @@ import { getSession, signOut } from "next-auth/react";
 import SettingsDialog from "./SettingsDialog";
 import CreateEventDialog from "./CreateEventDialog";
 import arrowDownSVG from "../../../public/icon/arrow_down.svg";
+import Link from "next/link";
 
 type Props = {
   token: string | undefined;
@@ -82,8 +83,32 @@ const Header = ({ token }: Props) => {
             <Image src={arrowDownSVG} alt="arrow" width={22} height={22} />
             <div className={`box-menu ${showMenu ? "open" : ""}`}>
               <ul>
-                <li>My Favorites</li>
-                <li>My Reservations</li>
+                <li>
+                  <Link
+                    href={"/my-favorites"}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flex: 1,
+                    }}
+                  >
+                    My Favorites
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={"/my-reservations"}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flex: 1,
+                    }}
+                  >
+                    My Reservations
+                  </Link>{" "}
+                </li>
                 <li onClick={() => setOpenSettingsDialog(true)}>Settings</li>
                 <li onClick={() => signOut()}>Sign out</li>
               </ul>
