@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
 import {
   addRatingEventThunk,
+  deleteEventThunk,
   getEventIdThunk,
   reservationEventThunk,
 } from "@/store/event/event";
@@ -15,7 +16,14 @@ import LINK_BACKEND from "@/store/baseURL";
 import { format } from "date-fns";
 import { Rating, ThinStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { Button } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import toast from "react-hot-toast";
 import EditEventDialog from "@/components/sharing/EditEventDialog";
 
@@ -30,6 +38,8 @@ const EventScreen = (props: Props) => {
   const [rating, setRating] = useState(event?.ratingUser);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [openEditEventDialog, setOpenEditEventDialog] =
+    React.useState<boolean>(false);
+  const [openDeleteEventDialog, setOpenDeleteEventDialog] =
     React.useState<boolean>(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -229,6 +239,7 @@ const EventScreen = (props: Props) => {
                       variant="contained"
                       color="error"
                       sx={{ height: 50, fontWeight: "bold" }}
+                      onClick={() => setOpenDeleteEventDialog(true)}
                     >
                       Delete
                     </Button>
@@ -390,6 +401,51 @@ const EventScreen = (props: Props) => {
         data={event}
         getEventHandler={getEventHandler}
       />
+      <Dialog
+        open={openDeleteEventDialog}
+        onClose={() => setOpenDeleteEventDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Event"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this event?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteEventDialog(false)}>
+            Disagree
+          </Button>
+          <Button
+            onClick={() => {
+              toast.promise(
+                Promise.resolve(
+                  dispatch(
+                    deleteEventThunk({
+                      token,
+                      event_id: event?._id,
+                    })
+                  )
+                ).then((response) => {
+                  if (response.payload?.result) {
+                    router.push("/");
+                    return response.payload?.message;
+                  }
+                }),
+                {
+                  loading: "Saving...",
+                  success: (message) => <b>{message}</b>,
+                  error: <b>Please try again.</b>,
+                }
+              );
+            }}
+            autoFocus
+          >
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
